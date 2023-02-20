@@ -1,10 +1,16 @@
 import './Cart.css'
+import {useDispatch} from 'react-redux'
+import {useSelector} from 'react-redux'
+import {removeProduct} from "../actions/cartActions"
 
-function Cart(props) {
-    const shoppinglist = props.state.map((i) => {
+export default function Cart({books}) {
+    const state = useSelector(state => state)
+    const dispatch = useDispatch()
+
+    const shoppinglist = state.map((i) => {
         return <li key={i} data-id={i}>
             <button className='li-button' onClick={(e) => handleXClick(e)}>X</button>
-            <b>{props.books[i].title}</b> - {props.books[i].author}</li>
+            <b>{books[i].title}</b> - {books[i].author}</li>
     })
 
     function handleCartClick(e) {
@@ -12,7 +18,7 @@ function Cart(props) {
     }
     function handleXClick(e) {
         let removeIndex = Number(e.target.parentElement.dataset.id)
-        props.removeProduct(removeIndex)
+        dispatch(removeProduct(removeIndex))
     }
 
     return (
@@ -24,9 +30,7 @@ function Cart(props) {
                 </ol>
             </div>
             <p className='cart__text' onClick={(e) => handleCartClick(e)}>Cart </p>
-            <p className='cart__number'>{props.state.length}</p>
+            <p className='cart__number'>{state.length}</p>
         </div>
     )
 }
-
-export default Cart
